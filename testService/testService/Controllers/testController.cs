@@ -19,8 +19,8 @@ namespace testService.Controllers
             return "Hello world";
         }
 
-        [Route("api/test/getData")]
-        public void getData()
+        //[Route("api/test/getData")]
+        public void getData(string title)
         {
             DataTable dta = new DataTable();
             SqlConnection connection = null;
@@ -29,13 +29,15 @@ namespace testService.Controllers
                 using (connection = new SqlConnection(ConfigurationManager.ConnectionStrings[1].ConnectionString))
                 {
                     connection.Open();
-                    string a = "npm";
-                    string query = "INSERT INTO testTable (title)";
-                    query += " VALUES (@title)";
+                    if(!string.IsNullOrEmpty(title))
+                    {
+                        string query = "INSERT INTO testTable (title)";
+                        query += " VALUES (@title)";
 
-                    SqlCommand myCommand = new SqlCommand(query, connection);
-                    myCommand.Parameters.AddWithValue("@Title", a);
-                    myCommand.ExecuteNonQuery();
+                        SqlCommand myCommand = new SqlCommand(query, connection);
+                        myCommand.Parameters.AddWithValue("@Title", title);
+                        myCommand.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
